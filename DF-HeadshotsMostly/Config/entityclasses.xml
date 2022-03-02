@@ -1,0 +1,56 @@
+<configs>
+
+  <append xpath="/entity_classes/entity_class[@name='playerMale']">
+    <effect_group>
+      <!-- this effect_group is courtesy of Khaine 2/7/2022
+            comment out an perk group below to have it NOT be modified by this mod.  ie, if the line with
+            "perkDemolitionsExpert" is commented out, explosives will not be affected.  See perkDemolitionsExpert below. -->
+			<requirements compare_type="or">
+				<requirement name="HoldingItemHasTags" tags="perkSalvageOperations"/>
+				<requirement name="HoldingItemHasTags" tags="perkTheHuntsman"/>
+				<requirement name="HoldingItemHasTags" tags="perkDeepCuts"/>
+				<requirement name="HoldingItemHasTags" tags="perkPummelPete"/>
+				<requirement name="HoldingItemHasTags" tags="perkElectrocutioner"/>
+				<requirement name="HoldingItemHasTags" tags="perkJavelinMaster"/>
+				<requirement name="HoldingItemHasTags" tags="perkSkullCrusher"/>
+				<requirement name="HoldingItemHasTags" tags="perkBrawler"/>
+				<requirement name="HoldingItemHasTags" tags="perkGunslinger"/>
+				<requirement name="HoldingItemHasTags" tags="perkBoomstick"/>
+				<requirement name="HoldingItemHasTags" tags="perkDeadEye"/>
+				<requirement name="HoldingItemHasTags" tags="perkMachineGunner"/>
+				<requirement name="HoldingItemHasTags" tags="perkArchery"/>
+				<requirement name="HoldingItemHasTags" tags="perkTurrets"/>
+				<!--<requirement name="HoldingItemHasTags" tags="perkDemolitionsExpert"/>-->
+			</requirements>
+
+<!-- the dials below detemine exactly how much headshots/non-headshots do relative to normal from the above sources
+      note there are other controls on this, like difficulty level, perks, and mods.  These will stack.  -->
+
+<!-- to decrease non-headshot damage from the above sources, change the line below.
+    value="-0.50" reduces non-headshots by 50%
+    value="-1" should negate them entirely  -->
+
+      <passive_effect name="DamageModifier" operation="perc_add" value="-1">
+        <requirement name="!HitLocation" body_parts="Head"/>
+        <requirement name="EntityTagCompare" target="other" tags="zombie"/>
+      </passive_effect>
+
+<!-- if you want to also add a flat *increase* to headshot damage to compensate, you can do that below.
+      value="0" is no bonus. 
+      value="0.25" will be a 25% increase in headshot damage.  Apply sparingly -->
+
+      <passive_effect name="DamageModifier" operation="perc_add" value="0" tags='head'>
+        <requirement name="EntityTagCompare" target="other" tags="zombie"/>
+      </passive_effect>
+
+<!-- we also thought it would be fun to increase limb dismemberment chance, but exclude the head
+      value="0.05" is a base 5% increase.  Note this starts low and also scales with perks, so
+      don't set this any higher than 0.1, but for now it is 'off' - no increase
+      to enable, set the value property on the following line to something other than 0        -->
+      <passive_effect name="DismemberChance" operation="base_add" value="0" tags="arm,leg">
+        <requirement name="EntityTagCompare" target="other" tags="zombie"/>
+      </passive_effect>
+
+    </effect_group>
+	</append>
+</configs>
